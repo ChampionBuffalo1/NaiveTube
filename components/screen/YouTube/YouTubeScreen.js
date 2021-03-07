@@ -26,16 +26,17 @@ export default function YouTubeSearchMock({ navigation: { navigate } }) {
      * Search for video stats (Like, Dislike, Comment)
      * https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&key=AIzaSyC_eIBiYeknCcthyxY3mGJWfClYHkVYhGM&id=rfscVS0vtbw
      */
-    // this used to search for video using a string
-    const url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyC_eIBiYeknCcthyxY3mGJWfClYHkVYhGM&q=${encodeURI(value)}&type=video&order=viewCount&part=snippet&maxResults=25`;
+    // this used to search for video using a string // &type=video&order=viewCount
+    const url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyC_eIBiYeknCcthyxY3mGJWfClYHkVYhGM&q=${encodeURI(value)}&part=snippet&maxResults=25`;
     await fetch(url)
     .then(r => r.json())  
     .then(r  => setData(r));
   }
   
   const render = ({ item }) => {
-    return (
-      <TouchableOpacity
+    if(item.id.kind === "youtube#video"){
+      return (
+        <TouchableOpacity
         onPress={() =>
           navigate('YouTubePlayer', {
             id: item.id.videoId,
@@ -43,18 +44,39 @@ export default function YouTubeSearchMock({ navigation: { navigate } }) {
             thumbnail: item.snippet.thumbnails.high.url
           })
         }>
-        <Card>
+        <Card containerStyle={styles.wrapper}>
           <Card.Image
             source={{
               uri: item.snippet.thumbnails.high.url,
             }}
           />
-          <Card.Title>{item.snippet.title}</Card.Title>
+          <Card.Title style={styles.title}>{decodeHTML(item.snippet.title)}</Card.Title>
           <Card.Divider />
-          <Text style={styles.channelName}>{item.snippet.channelTitle}</Text>
+          <Text style={styles.channelName}>{decodeHTML(item.snippet.channelTitle)}</Text>
         </Card>
       </TouchableOpacity>
-    );
+    );   
+  } else if (item.id.kind === "youtube#channel") {
+     return ( 
+        <TouchableOpacity 
+          onPress={() => navigate("YouTubeChannels", {
+            id: item.id.channelId
+          })}>
+         <Card>
+         <Card.Title>{item.snippet.title}</Card.Title>
+          <Card.Image
+            source={{ uri: item.snippet.thumbnails.default.url}} 
+            style={styles.thumbnail}
+          /> 
+         <Card.Divider />
+          <Text>{decodeHTML(item.snippet.description)}</Text>
+        </Card>      
+      </TouchableOpacity>
+    )
+  } else if (item.id.kind === "youtube#playlist"){
+    return <Text>PLAYLIST: {item.snippet.title}</Text>
+  }
+   
   };
   return (
     <View>
@@ -70,7 +92,7 @@ export default function YouTubeSearchMock({ navigation: { navigate } }) {
         <FlatList
         data={data.items}
         renderItem={render}
-        keyExtractor={(item) => item.id.videoId}
+        keyExtractor={(item) => item.id.videoId || item.id.channelId || item.id.playlistId}
       />     
       )
     }
@@ -78,6 +100,25 @@ export default function YouTubeSearchMock({ navigation: { navigate } }) {
   );
 }
 
+const decodeHTML = (text) => {
+  const entities = [
+    ['amp', '&'],
+    ['apos', '\''],
+    ['#x27', '\''],
+    ['#x2F', '/'],
+    ['#39', '\''],
+    ['#47', '/'],
+    ['lt', '<'],
+    ['gt', '>'],
+    ['nbsp', ' '],
+    ['quot', '"']
+  ];
+
+  for(var i = 0, max = entities.length; i < max; ++i)
+    text = text.replace(new RegExp(`&${entities[i][0]};`,'g'), entities[i][1]);
+  
+  return text;
+}
 
 const styles = StyleSheet.create({
   search: {
@@ -92,6 +133,12 @@ const styles = StyleSheet.create({
     marginLeft: width / 2,
   },
   channelName: {
-    fontSize: 10,
+    fontSize: 13,
   },
+  title: {
+    paddingTop: 10
+  },
+  wrapper: {
+    backgroundColor: "gray"
+  }
 });

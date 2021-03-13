@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Text,
-  Image,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
-const width = Dimensions.get("window").width;
 
 export default function NasaAPOD() {
   const [data, setData] = useState(null);

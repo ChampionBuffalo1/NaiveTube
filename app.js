@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React from 'react';
 import Main from './components/MainScreen';
 import { enableScreens } from 'react-native-screens';
 enableScreens();

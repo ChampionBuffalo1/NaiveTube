@@ -36,12 +36,13 @@ export default function YouTubeSearchMock({ navigation: { navigate } }) {
 
   const render = ({ item }) => {
     if (item.id.kind === "youtube#video") {
+      const title = decodeHTML(item.snippet.title);
       return (
         <TouchableOpacity
           onPress={() =>
             navigate("YouTubePlayer", {
               id: item.id.videoId,
-              title: item.snippet.title,
+              title,
               thumbnail: item.snippet.thumbnails.high.url,
             })
           }
@@ -52,9 +53,7 @@ export default function YouTubeSearchMock({ navigation: { navigate } }) {
                 uri: item.snippet.thumbnails.high.url,
               }}
             />
-            <Card.Title style={styles.title}>
-              {decodeHTML(item.snippet.title)}
-            </Card.Title>
+            <Card.Title style={styles.title}>{title}</Card.Title>
             <Card.Divider />
             <Text style={styles.channelName}>
               {decodeHTML(item.snippet.channelTitle)}

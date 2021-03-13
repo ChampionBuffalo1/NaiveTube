@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { View, StyleSheet, Button, TextInput } from 'react-native';
-import { Video, AVPlaybackStatus } from 'expo-av';
+import * as React from "react";
+import { View, StyleSheet, Button, TextInput } from "react-native";
+import { Video, AVPlaybackStatus } from "expo-av";
 
 export default function App() {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = React.useState("");
 
   return (
     <View style={styles.container}>
@@ -13,8 +13,8 @@ export default function App() {
         value={value}
         onChangeText={setValue}
         style={{
-          borderColor: 'gray',
-          justifyContent: 'center',
+          borderColor: "gray",
+          justifyContent: "center",
           borderWidth: 1,
           height: 40,
           borderRadius: 21,
@@ -28,7 +28,7 @@ export default function App() {
         style={styles.video}
         source={{
           uri:
-            'https://earnestbronzeopentracker.arkhamknight1.repl.co/streamV/GPVsHOlRBBI',
+            "https://earnestbronzeopentracker.arkhamknight1.repl.co/streamV/GPVsHOlRBBI",
         }}
         useNativeControls
         resizeMode="contain"
@@ -37,7 +37,7 @@ export default function App() {
       />
       <View style={styles.buttons}>
         <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
+          title={status.isPlaying ? "Pause" : "Play"}
           onPress={() =>
             status.isPlaying
               ? video.current.pauseAsync()
@@ -52,17 +52,17 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    justifyContent: "center",
+    backgroundColor: "#ecf0f1",
   },
   video: {
-    alignSelf: 'center',
+    alignSelf: "center",
     width: 320,
     height: 200,
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

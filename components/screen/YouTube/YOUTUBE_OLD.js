@@ -1,16 +1,16 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   View,
   StyleSheet,
   Text,
   FlatList,
   TouchableOpacity,
-  Dimensions
-} from 'react-native';
-import { Card } from 'react-native-elements';
-import VideoPlayer from 'expo-video-player';
+  Dimensions,
+} from "react-native";
+import { Card } from "react-native-elements";
+import VideoPlayer from "expo-video-player";
 
-const height = Dimensions.get('screen').height / 3;
+const height = Dimensions.get("screen").height / 3;
 
 export default function YouTubePlayer(props) {
   let video = React.useRef(null);
@@ -29,24 +29,24 @@ export default function YouTubePlayer(props) {
     <View style={styles.container}>
       <Text style={styles.custom}>{title}</Text>
       <VideoPlayer
-          height={height}
-          videoBackground='transparent' 
-          videoProps={{
-           videoRef: (e) => video.current = e,
-            posterSource: { uri: thumbnail },
-            usePoster: true,
-            resizeMode: 'contain',
-            shouldPlay: true,
-            source: {
-              uri: `https://earnestbronzeopentracker.arkhamknight1.repl.co/streamV/${id}`,
-            },
-            isLooping: false,
-            rate: 1.0,
-            shouldCorrectPitch: true,
-          }}
-          inFullscreen={false}
-        />
-        {suggest.hasOwnProperty('items') && (
+        height={height}
+        videoBackground="transparent"
+        videoProps={{
+          videoRef: (e) => (video.current = e),
+          posterSource: { uri: thumbnail },
+          usePoster: true,
+          resizeMode: "contain",
+          shouldPlay: true,
+          source: {
+            uri: `https://earnestbronzeopentracker.arkhamknight1.repl.co/streamV/${id}`,
+          },
+          isLooping: false,
+          rate: 1.0,
+          shouldCorrectPitch: true,
+        }}
+        inFullscreen={false}
+      />
+      {suggest.hasOwnProperty("items") && (
         <DisplaySuggestion
           data={suggest}
           navigate={props.navigation.navigate}
@@ -60,12 +60,13 @@ const DisplaySuggestion = ({ data, navigate }) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigate('YouTubePlayer', {
+          navigate("YouTubePlayer", {
             id: item.id.videoId,
             title: item.snippet.title,
-            thumbnail: item.snippet.thumbnails.high.url
+            thumbnail: item.snippet.thumbnails.high.url,
           })
-        }>
+        }
+      >
         <Card>
           <Card.Image
             source={{
@@ -92,29 +93,28 @@ const DisplaySuggestion = ({ data, navigate }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    justifyContent: "center",
+    backgroundColor: "#ecf0f1",
   },
   video: {
-    alignSelf: 'center',
+    alignSelf: "center",
     width: 320,
     height: 200,
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   custom: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     padding: 10,
   },
   channelName: {
     fontSize: 10,
   },
 });
-
 
 /**
  * {
@@ -139,8 +139,7 @@ const styles = StyleSheet.create({
  * 
  */
 
-
- /**
+/**
   * Stop/Play Button
   *   
   *    const [status, setStatus] = React.useState({});
